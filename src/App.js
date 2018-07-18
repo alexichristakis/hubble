@@ -10,6 +10,8 @@ console.log(process.env);
 const MAPBOX_TOKEN =
   "pk.eyJ1IjoiYWxleGljIiwiYSI6ImNqanE1emM3cDJ0czczcnNvcGQwZmFiNDcifQ.OY9UfSfy-p0uL43FaQwDJA";
 
+console.log(window);
+
 class App extends Component {
   state = {
     dataSet: 0,
