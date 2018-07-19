@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from "react-places-autocomplete";
+import styles from './LocationSearchInputStyle'
+
 
 class LocationSearchInput extends Component {
   state = {
@@ -10,6 +12,7 @@ class LocationSearchInput extends Component {
     this.setState({ address });
   };
 
+<<<<<<< Updated upstream
   onPressResult = async address => {
     const results = await geocodeByAddress(address);
     const latLng = await getLatLng(results[0]);
@@ -66,5 +69,91 @@ class LocationSearchInput extends Component {
     );
   }
 }
+=======
+  return (
+    <div style= {styles.search_bar_container} >
+      <PlacesAutocomplete
+        value={address}
+        onChange={handleChange}
+        onSelect={onPressResult}
+        searchOptions={searchOptions}
+      >
+        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+          <div>
+            <input
+              {...getInputProps({
+                placeholder: "Search Places ...",
+                className: "location-search-input"
+              })}
+            />
+            <div className="autocomplete-dropdown-container">
+              {loading && <div>Loading...</div>}
+              {suggestions.map(suggestion => {
+                const className = suggestion.active ? "suggestion-item--active" : "suggestion-item";
+                // inline style for demonstration purpose
+                const style = suggestion.active
+                  ? { backgroundColor: "#fafafa", cursor: "pointer" }
+                  : { backgroundColor: "#ffffff", cursor: "pointer" };
+                return (
+                  <div
+                    {...getSuggestionItemProps(suggestion, {
+                      className,
+                      style
+                    })}
+                  >
+                    <span>{suggestion.description}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </PlacesAutocomplete>
+    </div>
+  );
+
+//   return (
+//     <div style={{ position: "absolute", top: 20, left: 375 }}>
+//       <PlacesAutocomplete
+//         value={address}
+//         onChange={handleChange}
+//         onSelect={onPressResult}
+//         searchOptions={searchOptions}
+//       >
+//         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+//           <div>
+//             <input
+//               {...getInputProps({
+//                 placeholder: "Search Places ...",
+//                 className: "location-search-input"
+//               })}
+//             />
+//             <div className="autocomplete-dropdown-container">
+//               {loading && <div>Loading...</div>}
+//               {suggestions.map(suggestion => {
+//                 const className = suggestion.active ? "suggestion-item--active" : "suggestion-item";
+//                 // inline style for demonstration purpose
+//                 const style = suggestion.active
+//                   ? { backgroundColor: "#fafafa", cursor: "pointer" }
+//                   : { backgroundColor: "#ffffff", cursor: "pointer" };
+//                 return (
+//                   <div
+//                     {...getSuggestionItemProps(suggestion, {
+//                       className,
+//                       style
+//                     })}
+//                   >
+//                     <span>{suggestion.description}</span>
+//                   </div>
+//                 );
+//               })}
+//             </div>
+//           </div>
+//         )}
+//       </PlacesAutocomplete>
+//     </div>
+//   );
+};
+>>>>>>> Stashed changes
 
 export default LocationSearchInput;
