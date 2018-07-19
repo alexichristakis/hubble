@@ -1,59 +1,70 @@
-import React from "react";
+import React, { Component } from "react";
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 
-const LocationSearchInput = ({ address, handleChange, handleSelect }) => {
-  const onPressResult = address => {
-    geocodeByAddress(address).then(results => handleSelect(results[0]));
-    // .then(results => getLatLng(results[0]))
-    // .then(latLng => handleSelect(latLng))
-    // .catch(error => console.error("Error", error));
+class LocationSearchInput extends Component {
+  state = {
+    address: ""
   };
 
-  const searchOptions = {
-    types: ["(regions)"]
+  handleChange = address => {
+    this.setState({ address });
   };
 
-  return (
-    <div style={{ position: "absolute", top: 20, left: 375 }}>
-      <PlacesAutocomplete
-        value={address}
-        onChange={handleChange}
-        onSelect={onPressResult}
-        searchOptions={searchOptions}
-      >
-        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-          <div>
-            <input
-              {...getInputProps({
-                placeholder: "Search Places ...",
-                className: "location-search-input"
-              })}
-            />
-            <div className="autocomplete-dropdown-container">
-              {loading && <div>Loading...</div>}
-              {suggestions.map(suggestion => {
-                const className = suggestion.active ? "suggestion-item--active" : "suggestion-item";
-                // inline style for demonstration purpose
-                const style = suggestion.active
-                  ? { backgroundColor: "#fafafa", cursor: "pointer" }
-                  : { backgroundColor: "#ffffff", cursor: "pointer" };
-                return (
-                  <div
-                    {...getSuggestionItemProps(suggestion, {
-                      className,
-                      style
-                    })}
-                  >
-                    <span>{suggestion.description}</span>
-                  </div>
-                );
-              })}
+  onPressResult = async address => {
+    const results = await geocodeByAddress(address);
+    const latLng = await getLatLng(results[0]);
+    this.props.handleSelect(results[0], latLng);
+  };
+
+  render() {
+    const searchOptions = {
+      types: ["(regions)"]
+    };
+
+    return (
+      <div style={{ position: "absolute", top: 20, left: 375 }}>
+        <PlacesAutocomplete
+          value={this.state.address}
+          onChange={this.handleChange}
+          onSelect={this.onPressResult}
+          searchOptions={searchOptions}
+        >
+          {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+            <div>
+              <input
+                {...getInputProps({
+                  placeholder: "Search Places ...",
+                  className: "location-search-input"
+                })}
+              />
+              <div className="autocomplete-dropdown-container">
+                {loading && <div>Loading...</div>}
+                {suggestions.map(suggestion => {
+                  const className = suggestion.active
+                    ? "suggestion-item--active"
+                    : "suggestion-item";
+                  // inline style for demonstration purpose
+                  const style = suggestion.active
+                    ? { backgroundColor: "#fafafa", cursor: "pointer" }
+                    : { backgroundColor: "#ffffff", cursor: "pointer" };
+                  return (
+                    <div
+                      {...getSuggestionItemProps(suggestion, {
+                        className,
+                        style
+                      })}
+                    >
+                      <span>{suggestion.description}</span>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        )}
-      </PlacesAutocomplete>
-    </div>
-  );
-};
+          )}
+        </PlacesAutocomplete>
+      </div>
+    );
+  }
+}
 
 export default LocationSearchInput;
