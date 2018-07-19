@@ -25,9 +25,9 @@ class LocationSearchInput extends Component {
     return (
       <div style={styles.search_bar_container}>
         <PlacesAutocomplete
-          value={address}
-          onChange={handleChange}
-          onSelect={onPressResult}
+          value={this.state.address}
+          onChange={this.handleChange}
+          onSelect={this.onPressResult}
           searchOptions={searchOptions}
         >
           {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
