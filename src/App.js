@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import { addDataToMap, wrapTo } from "kepler.gl/actions";
 import KeplerGl from "kepler.gl";
+import LocationSearchInput from "./LocationSearchInput"
 
 // import mock data from some json file
 
@@ -34,7 +35,10 @@ class App extends Component {
   render() {
     const { width, height } = this.state;
     return (
-      <KeplerGl mapboxApiAccessToken={MAPBOX_TOKEN} id={"map"} width={width} height={height} />
+      <div>
+        <KeplerGl mapboxApiAccessToken={MAPBOX_TOKEN} id={"map"} width={width} height={height} />
+        <LocationSearchInput />
+      </div>
     );
   }
 }
