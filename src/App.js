@@ -1,28 +1,34 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 
 import { connect } from "react-redux";
 import { addDataToMap, removeDataset, wrapTo } from "kepler.gl/actions";
-import KeplerGl from "kepler.gl";
-import LocationSearchInput from "./LocationSearchInput";
+// import KeplerGl from "kepler.gl";
+
+import DataSetSelection from "./DataSetSelection";
+
+// import LocationSearchInput from "./LocationSearchInput";
+import CustomMapControl from "./CustomMapControl";
 
 import sampleData from "./data/sample-data";
 import config from "./configurations/config.json";
 
+import { injectComponents, MapControlFactory, ModalContainerFactory } from "kepler.gl/components";
+
+// define custom components
+const Empty = () => <div />;
+
+const customControlFactory = () => CustomMapControl;
+const customModalContainerFactory = () => Empty;
+
+// Inject custom components into Kepler.gl, replacing default
+const KeplerGl = injectComponents([
+  // [MapControlFactory, customControlFactory],
+  [ModalContainerFactory, customModalContainerFactory]
+]);
+
 const KEPLER_ID = "map";
 const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_API_KEY;
 const GOOGLE_MAPS_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
-
-/*
-"mapState": {
-  "bearing": 0,
-  "dragRotate": false,
-  "latitude": 37.76544453921235,
-  "longitude": -122.46289885132524,
-  "pitch": 0,
-  "zoom": 12.032736770460689,
-  "isSplit": false
-},
-*/
 
 class App extends Component {
   state = {
@@ -46,7 +52,7 @@ class App extends Component {
     const mapState = {
       latitude: lat,
       longitude: lng,
-      zoom: 7
+      zoom: 5
     };
     const keplerConfig = { mapState };
 
@@ -110,15 +116,17 @@ class App extends Component {
   render() {
     const { width, height } = this.state;
     return (
-      <div>
+      <Fragment>
         <KeplerGl
           mapboxApiAccessToken={MAPBOX_TOKEN}
           id={KEPLER_ID}
           width={width}
           height={height}
         />
-        <LocationSearchInput handleSelect={this.handleSelect} />
-      </div>
+        <DataSetSelection />
+        {/* <LocationSearchInput handleSelect={this.handleSelect} /> */}
+        {/* <FullScreenButton id={KEPLER_ID} /> */}
+      </Fragment>
     );
   }
 }

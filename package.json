@@ -6,11 +6,11 @@
     "kepler.gl": "0.0.25",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
+    "react-dropdown": "^1.5.0",
     "react-places-autocomplete": "^7.2.0",
     "react-redux": "^5.0.7",
     "react-scripts": "1.1.4",
-    "react-virtualized": "^9.20.1",
-    "styled-components": "^2.2.4"
+    "react-virtualized": "^9.20.1"
   },
   "scripts": {
     "start": "react-scripts start",
