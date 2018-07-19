@@ -3,14 +3,14 @@ import PlacesAutocomplete, { geocodeByAddress, getLatLng } from "react-places-au
 
 const LocationSearchInput = ({ address, handleChange, handleSelect }) => {
   const onPressResult = address => {
-    geocodeByAddress(address).then(result => handleSelect(result));
+    geocodeByAddress(address).then(results => handleSelect(results[0]));
     // .then(results => getLatLng(results[0]))
     // .then(latLng => handleSelect(latLng))
     // .catch(error => console.error("Error", error));
   };
 
   const searchOptions = {
-    types: ["locality", "sublocality", "country"]
+    types: ["(regions)"]
   };
 
   return (
@@ -19,7 +19,7 @@ const LocationSearchInput = ({ address, handleChange, handleSelect }) => {
         value={address}
         onChange={handleChange}
         onSelect={onPressResult}
-        // searchOptions={searchOptions}
+        searchOptions={searchOptions}
       >
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
           <div>

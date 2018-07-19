@@ -32,7 +32,7 @@ class App extends Component {
       county: ""
     };
 
-    const components = result[0].address_components;
+    const components = result.address_components;
     const firstComp = components[0];
     const firstCompArray = firstComp.long_name.split(" ");
     if (firstComp.short_name.length === 2) {
