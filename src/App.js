@@ -4,8 +4,9 @@ import { addDataToMap, wrapTo } from "kepler.gl/actions";
 import KeplerGl from "kepler.gl";
 import LocationSearchInput from "./LocationSearchInput";
 
-// import mock data from some json file
+import config from "./configurations/config.json";
 
+const KEPLER_ID = "map";
 const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_API_KEY;
 const GOOGLE_MAPS_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
@@ -20,6 +21,21 @@ class App extends Component {
       height: window.innerHeight
     };
   }
+
+  updateKeplerData = data => {
+    this.props.dispatch(
+      wrapTo(
+        KEPLER_ID,
+        addDataToMap({
+          datasets: data,
+          options: {
+            centerMap: true
+          },
+          config
+        })
+      )
+    );
+  };
 
   handleChange = address => {
     this.setState({ address });
@@ -67,7 +83,12 @@ class App extends Component {
     const { width, height } = this.state;
     return (
       <div>
-        <KeplerGl mapboxApiAccessToken={MAPBOX_TOKEN} id={"map"} width={width} height={height} />
+        <KeplerGl
+          mapboxApiAccessToken={MAPBOX_TOKEN}
+          id={KEPLER_ID}
+          width={width}
+          height={height}
+        />
         <LocationSearchInput
           address={this.state.address}
           handleChange={this.handleChange}
