@@ -14,7 +14,7 @@ class LocationSearchInput extends Component {
   onPressResult = async address => {
     const results = await geocodeByAddress(address);
     const latLng = await getLatLng(results[0]);
-    this.props.handleSelect(results[0], latLng);
+    this.props.onSelectRegion(results[0], latLng);
   };
 
   render() {

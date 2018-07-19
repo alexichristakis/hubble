@@ -41,20 +41,13 @@ class App extends Component {
   //   this.updateKeplerData(sampleData);
   // }
 
-  updateKeplerData = (data, latLng) => {
-    // until we get the api call to return the json object
-    data = sampleData;
-
+  clearKeplerData = () => {
     const { dataSetKey } = this.state;
     if (dataSetKey !== "") this.props.dispatch(wrapTo(KEPLER_ID, removeDataset(dataSetKey)));
+  };
 
-    const { lat, lng } = latLng;
-    const mapState = {
-      latitude: lat,
-      longitude: lng,
-      zoom: 5
-    };
-    const keplerConfig = { mapState };
+  updateKeplerData = data => {
+    this.clearKeplerData();
 
     this.setState({ dataSetKey: data.info.id }, () =>
       this.props.dispatch(
@@ -64,41 +57,38 @@ class App extends Component {
             datasets: data,
             options: {
               centerMap: true
-            },
-            config: keplerConfig
+            }
           })
         )
       )
     );
   };
 
-  handleSelect = (result, latLng) => {
-    this.setState({ region: latLng });
-
-    let query = {
-      type: 0, // 0 -> country, 1 -> state, 2 -> county
-      state: "",
-      county: ""
+  updateKeplerPosition = ({ lat, lng }) => {
+    this.clearKeplerData();
+    const mapState = {
+      latitude: lat,
+      longitude: lng,
+      zoom: 5
     };
 
-    const components = result.address_components;
-    const firstComp = components[0];
-    const firstCompArray = firstComp.long_name.split(" ");
-    if (firstComp.short_name.length === 2) {
-      query.type = 1;
-      query.state = firstComp.short_name;
-      // console.log("this is a state: ", query);
-    } else if (firstCompArray[firstCompArray.length - 1] === "County") {
-      query.type = 2;
-      query.county = firstComp.long_name;
-      query.state = components[1].short_name;
-      // console.log("this is a county: ", query);
-    } else {
-      console.log("this is a city"); // please enter a state to see county in that state or a county to see cities in that county
-    }
+    const keplerConfig = { mapState };
+    this.props.dispatch(
+      wrapTo(
+        KEPLER_ID,
+        addDataToMap({
+          datasets: {},
+          config: keplerConfig
+        })
+      )
+    );
+  };
 
-    console.log("query: ", query);
-    this.updateKeplerData(query, latLng);
+  handleOnRequestMetric = query => {
+    console.log("QUERY: ", query);
+    /* make request from API */
+    const data = sampleData;
+    this.updateKeplerData(data);
   };
 
   componentWillMount() {
@@ -123,9 +113,10 @@ class App extends Component {
           width={width}
           height={height}
         />
-        <DataSetSelection />
-        {/* <LocationSearchInput handleSelect={this.handleSelect} /> */}
-        {/* <FullScreenButton id={KEPLER_ID} /> */}
+        <DataSetSelection
+          onSelectRegion={this.updateKeplerPosition}
+          onRequestMetric={this.handleOnRequestMetric}
+        />
       </Fragment>
     );
   }

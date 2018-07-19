@@ -2,26 +2,17 @@ import React, { Component } from "react";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
 
-const options = ["one", "two", "three"];
-const defaultOption = options[0];
+// const options = ["one", "two", "three"];
+// const defaultOption = options[0];
 
-class MetricDropdown extends Component {
-  state = {};
-
-  _onSelect = item => {
-    console.log(item);
+const MetricDropdown = props => {
+  const _onSelect = item => {
+    props.onMetricSelect(item);
   };
 
-  render() {
-    return (
-      <Dropdown
-        options={options}
-        onChange={this._onSelect}
-        value={defaultOption}
-        placeholder="Select an option"
-      />
-    );
-  }
-}
+  return (
+    <Dropdown options={props.availableMetrics} onChange={_onSelect} placeholder="Select a metric" />
+  );
+};
 
 export default MetricDropdown;
