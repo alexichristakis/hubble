@@ -33,13 +33,39 @@ const GOOGLE_MAPS_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 class App extends Component {
   state = {
     dataSetKey: "",
+    availableMetrics: [],
     width: window.innerWidth,
     height: window.innerHeight
   };
 
-  // componentDidMount() {
-  //   this.updateKeplerData(sampleData);
-  // }
+  componentDidMount() {
+    // this.updateKeplerData(sampleData);
+    /* fetch available metrics */
+    // this.setState({ availableMetrics: [0, 1, 2, 3, 4, 5] });
+  }
+
+  // generateMetricObject = metrics => {
+  // const colorOptions = [
+  //   { value: "blue", label: "Blue" },
+  //   { value: "red", label: "Red" },
+  //   { value: "yellow", label: "Yellow" }
+  // ];
+  //
+  // const flavorOptions = [{ value: "chocolate", label: "chocolate" }];
+  //
+  // const groupedOptions = [
+  //   {
+  //     label: "Colors",
+  //     options: colorOptions
+  //   },
+  //   {
+  //     label: "Flavors",
+  //     options: flavorOptions
+  //   }
+  // ];
+
+  // this.setState({ availableMetrics: groupedOptions });
+  // };
 
   clearKeplerData = () => {
     const { dataSetKey } = this.state;
@@ -115,6 +141,7 @@ class App extends Component {
         />
         <DataSetSelection
           onSelectRegion={this.updateKeplerPosition}
+          availableMetrics={this.state.availableMetrics}
           onRequestMetric={this.handleOnRequestMetric}
         />
       </Fragment>

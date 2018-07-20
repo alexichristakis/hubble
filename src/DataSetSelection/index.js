@@ -3,10 +3,12 @@ import React, { Component } from "react";
 import LocationSearchInput from "./LocationSearchInput";
 import MetricDropdown from "./MetricDropdown";
 
-class DataSetSelection extends Component {
+const defaultRegion = { state: "CA", county: "San Francisco", city: "San Francisco" };
+
+class DatasetSelection extends Component {
   state = {
     selectedMetric: "",
-    selectedRegion: { state: "CA", county: "San Francisco", city: "San Francisco" }
+    selectedRegion: defaultRegion
   };
 
   handleOnSelectMetric = selectedMetric => {
@@ -60,11 +62,11 @@ class DataSetSelection extends Component {
         <LocationSearchInput onSelectRegion={this.handleOnSelectRegion} />
         <MetricDropdown
           onMetricSelect={this.handleOnSelectMetric}
-          availableMetrics={[0, 1, 2, 3, 4]}
+          // availableMetrics={this.props.availableMetrics}
         />
       </div>
     );
   }
 }
 
-export default DataSetSelection;
+export default DatasetSelection;

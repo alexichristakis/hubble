@@ -10,6 +10,7 @@
     "react-places-autocomplete": "^7.2.0",
     "react-redux": "^5.0.7",
     "react-scripts": "1.1.4",
+    "react-select": "^2.0.0-beta.7",
     "react-virtualized": "^9.20.1"
   },
   "scripts": {
