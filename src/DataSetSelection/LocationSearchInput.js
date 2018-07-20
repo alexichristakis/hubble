@@ -26,30 +26,31 @@ class LocationSearchInput extends Component {
       <PlacesAutocomplete
         value={this.state.address}
         onChange={this.handleChange}
-        onSelect={this.onPressResult}
-        searchOptions={searchOptions}
+        onSelect={this.handleSelect}
       >
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-          <div style={styles.search_bar_container}>
+          <div>
             <input
               {...getInputProps({
-                placeholder: "Search Places...",
-                style: styles.search_bar_input
+                placeholder: 'Search Places ...',
+                className: 'location-search-input',
               })}
             />
-            <div style={styles.search_bar_dropdown_container}>
+            <div className="autocomplete-dropdown-container">
               {loading && <div>Loading...</div>}
               {suggestions.map(suggestion => {
-                const className = suggestion.active ? "suggestion-item--active" : "suggestion-item";
+                const className = suggestion.active
+                  ? 'suggestion-item--active'
+                  : 'suggestion-item';
                 // inline style for demonstration purpose
                 const style = suggestion.active
-                  ? { width: "100%", backgroundColor: "#fafafa", cursor: "pointer" }
-                  : { width: "100%", backgroundColor: "#ffffff", cursor: "pointer" };
+                  ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                  : { backgroundColor: '#ffffff', cursor: 'pointer' };
                 return (
                   <div
                     {...getSuggestionItemProps(suggestion, {
                       className,
-                      style
+                      style,
                     })}
                   >
                     <span>{suggestion.description}</span>

@@ -49,6 +49,11 @@ class DatasetSelection extends Component {
   };
 
   render() {
+
+    const dummyStyle = {
+      width: "15px"
+    };
+
     return (
       <div
         style={{
@@ -60,6 +65,7 @@ class DatasetSelection extends Component {
         }}
       >
         <LocationSearchInput onSelectRegion={this.handleOnSelectRegion} />
+        <div style={dummyStyle}></div>
         <MetricDropdown
           onMetricSelect={this.handleOnSelectMetric}
           // availableMetrics={this.props.availableMetrics}

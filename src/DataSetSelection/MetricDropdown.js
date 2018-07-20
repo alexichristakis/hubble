@@ -8,6 +8,7 @@ const groupStyles = {
   alignItems: "center",
   justifyContent: "space-between"
 };
+
 const groupBadgeStyles = {
   backgroundColor: "#EBECF0",
   borderRadius: "2em",
