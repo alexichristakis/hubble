@@ -151,7 +151,9 @@ class App extends Component {
   onSelectRegion = (region) => {
     this.clearKeplerData(); // new position, clear all old data
 
-    this.updateKeplerRegionData(geoJson);
+    // TODO: Make api call
+
+    /*this.updateKeplerRegionData(geoJson);
 
     const keplerConfig = { mapState };
     this.props.dispatch(
@@ -162,7 +164,7 @@ class App extends Component {
           config: keplerConfig
         })
       )
-    );
+    );*/
   };
 
   onSelectMetric = query => {
