@@ -33,21 +33,18 @@ export const Test = () => {
 };
 //////////////////
 
-const getGeoURL = ({ regionType, state, county, city }) => {
+const getFilePathForRegion = ({ regionType, state, county, city }) => {
   switch (regionType) {
-    case "state":
-      console.log("STATE: ", state, county, city);
-      return urlFromKey(`states/${state}/poly.json`);
-    case "county":
-      console.log("COUNTY: ", state, county, city);
-      return urlFromKey(`counties/${state}_${county}/poly.json`);
-    case "city":
-      console.log("CITY: ", state, county, city);
-      return urlFromKey(`cities/${state}_${county}_${city}/poly.json`);
+    case 1:
+      return `states/${state}`;
+    case 2:
+      return `counties/${state}_${county}`;
+    case 3:
+      return `cities/${state}_${county}_${city}`;
+    default:
+      return "national";
   }
 };
-
-const getMetricURL = ({ isTimeSeries, regionType, state, county, city }) => {};
 
 const urlFromKey = key => {
   return s3.getSignedUrl("getObject", {
@@ -59,7 +56,7 @@ const urlFromKey = key => {
 
 export const GetRegionData = query => {
   return new Promise(resolve => {
-    const url = getGeoURL(query);
+    // const url = getGeoURL(query);
     axios
       .get(url)
       .then(result => resolve(result.data))
@@ -69,7 +66,29 @@ export const GetRegionData = query => {
 
 export const GetMetricData = query => {
   return new Promise(resolve => {
-    const url = getMetricURL(query);
+    const { region, metric } = query;
+    const { state, county, city, regionType } = region;
+
+    let suffix;
+    switch (regionType) {
+      case 1:
+        suffix = state;
+        break;
+      case 2:
+        suffix = county;
+        break;
+      case 3:
+        suffix = city;
+        break;
+      default:
+        suffix = "US";
+    }
+
+    const filePath = getFilePathForRegion(region);
+    const key = filePath + `/metric_time_series/${metric}_${suffix}.csv`;
+
+    const url = urlFromKey(key);
+
     axios.get(url).then(result => resolve(result.data));
   });
 };

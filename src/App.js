@@ -24,7 +24,7 @@ import {
   PanelHeaderFactory
 } from "kepler.gl/components";
 
-import { Test } from "./api";
+import { Test, GetMetricData } from "./api";
 
 // define custom components
 const Empty = () => <div />;
@@ -168,11 +168,11 @@ class App extends Component {
     );
   };
 
-  handleOnRequestMetric = query => {
+  handleOnSelectMetric = query => {
     console.log("QUERY: ", query);
+
     /* make request from API */
-    const data = sampleData;
-    this.updateKeplerMetricData(data);
+    GetMetricData(query).then(data => this.updateKeplerData(data));
   };
 
   _onResize = () => {
@@ -195,7 +195,7 @@ class App extends Component {
         <DatasetSelection
           onSelectRegion={this.handleOnSelectRegion}
           availableMetrics={this.state.availableMetrics}
-          onRequestMetric={this.handleOnRequestMetric}
+          onSelectMetric={this.handleOnSelectMetric}
         />
       </Fragment>
     );

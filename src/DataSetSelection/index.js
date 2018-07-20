@@ -3,7 +3,12 @@ import React, { Component } from "react";
 import LocationSearchInput from "./LocationSearchInput";
 import MetricDropdown from "./MetricDropdown";
 
-const defaultRegion = { state: "CA", county: "San Francisco", city: "San Francisco", regionType: 3 };
+const defaultRegion = {
+  state: "CA",
+  county: "San Francisco",
+  city: "San Francisco",
+  regionType: 3
+};
 
 const containerStyle = {
   position: "absolute",
@@ -31,7 +36,7 @@ class DatasetSelection extends Component {
         metric: selectedMetric.value,
         region: selectedRegion
       };
-      this.props.onRequestMetric(query);
+      this.props.onSelectMetric(query);
     });
   };
 
@@ -64,7 +69,7 @@ class DatasetSelection extends Component {
       const lastIndex = components[1].long_name.lastIndexOf(" ");
       region.county = components[1].long_name.substring(0, lastIndex);
       region.state = components[2].short_name;
-      region.regionType = 3
+      region.regionType = 3;
     }
     console.log(region);
 
@@ -76,15 +81,19 @@ class DatasetSelection extends Component {
       this.setState({ currentAddress: "" });
     };
 
-    const handleChange = (address) => {
+    const handleChange = address => {
       this.setState({ currentAddress: address });
     };
 
     return (
       <div style={containerStyle}>
-        <LocationSearchInput onSelectRegion={this.handleOnSelectRegion} handleChange={handleChange} 
-        handleCloseClick={handleCloseClick} address={this.state.currentAddress}/>
-        <MetricDropdown onMetricSelect={this.handleOnSelectMetric}/>
+        <LocationSearchInput
+          onSelectRegion={this.handleOnSelectRegion}
+          handleChange={handleChange}
+          handleCloseClick={handleCloseClick}
+          address={this.state.currentAddress}
+        />
+        <MetricDropdown onMetricSelect={this.handleOnSelectMetric} />
       </div>
     );
   }
