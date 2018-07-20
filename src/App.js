@@ -148,7 +148,7 @@ class App extends Component {
     // // );
   };
 
-  updateMapPosition = ({ lat, lng }) => {
+  handleOnSelectRegion = ({ lat, lng }) => {
     this.clearKeplerData(); // new position, clear all old data
     const mapState = {
       latitude: lat,
@@ -193,7 +193,7 @@ class App extends Component {
           height={height}
         />
         <DatasetSelection
-          onSelectRegion={this.updateMapPosition}
+          onSelectRegion={this.handleOnSelectRegion}
           availableMetrics={this.state.availableMetrics}
           onRequestMetric={this.handleOnRequestMetric}
         />

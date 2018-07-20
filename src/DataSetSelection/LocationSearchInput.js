@@ -28,18 +28,6 @@ const classnames = (...args) => {
 };
 
 class LocationSearchInput extends Component {
-  state = {
-    address: ""
-  };
-
-  handleCloseClick = () => {
-    this.setState({ address: "" });
-  };
-
-  handleChange = address => {
-    this.setState({ address });
-  };
-
   onPressResult = async address => {
     const results = await geocodeByAddress(address);
     const latLng = await getLatLng(results[0]);
@@ -55,8 +43,8 @@ class LocationSearchInput extends Component {
     return (
       <div style={{ width: "50%", overflow: "hidden" }}>
         <PlacesAutocomplete
-          onChange={this.handleChange}
-          value={this.state.address}
+          onChange={this.props.handleChange}
+          value={this.props.address}
           onSelect={this.onPressResult}
           searchOptions={searchOptions}
         >
@@ -70,8 +58,8 @@ class LocationSearchInput extends Component {
                       className: "search-input"
                     })}
                   />
-                  {this.state.address.length > 0 && (
-                    <button className="clear-button" onClick={this.handleCloseClick}>
+                  {this.props.address.length > 0 && (
+                    <button className="clear-button" onClick={this.props.handleCloseClick}>
                       x
                     </button>
                   )}
