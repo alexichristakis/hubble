@@ -23,7 +23,7 @@ const groupBadgeStyles = {
 };
 
 const MetricDropdown = props => {
-  const _onSelect = item => {
+  const handleOnChange = item => {
     props.onMetricSelect(item);
   };
 
@@ -38,6 +38,7 @@ const MetricDropdown = props => {
     <div style={{ width: 400 }}>
       <Select
         placeholder={"Select a metric"}
+        onChange={handleOnChange}
         options={AvailableMetrics}
         formatGroupLabel={formatGroupLabel}
       />

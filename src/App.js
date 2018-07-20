@@ -33,6 +33,7 @@ const GOOGLE_MAPS_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 class App extends Component {
   state = {
     dataSetKey: "",
+    geoJsonKey: "",
     availableMetrics: [],
     width: window.innerWidth,
     height: window.innerHeight
@@ -44,37 +45,14 @@ class App extends Component {
     // this.setState({ availableMetrics: [0, 1, 2, 3, 4, 5] });
   }
 
-  // generateMetricObject = metrics => {
-  // const colorOptions = [
-  //   { value: "blue", label: "Blue" },
-  //   { value: "red", label: "Red" },
-  //   { value: "yellow", label: "Yellow" }
-  // ];
-  //
-  // const flavorOptions = [{ value: "chocolate", label: "chocolate" }];
-  //
-  // const groupedOptions = [
-  //   {
-  //     label: "Colors",
-  //     options: colorOptions
-  //   },
-  //   {
-  //     label: "Flavors",
-  //     options: flavorOptions
-  //   }
-  // ];
-
-  // this.setState({ availableMetrics: groupedOptions });
-  // };
-
   clearKeplerData = () => {
-    const { dataSetKey } = this.state;
+    const { dataSetKey, geoJsonKey } = this.state;
     if (dataSetKey !== "") this.props.dispatch(wrapTo(KEPLER_ID, removeDataset(dataSetKey)));
+    if (geoJsonKey !== "") this.props.dispatch(wrapTo(KEPLER_ID, removeDataset(geoJsonKey)));
   };
 
-  updateKeplerData = data => {
-    this.clearKeplerData();
-
+  updateKeplerMetricData = data => {
+    // this.clearKeplerData();
     this.setState({ dataSetKey: data.info.id }, () =>
       this.props.dispatch(
         wrapTo(
@@ -90,8 +68,25 @@ class App extends Component {
     );
   };
 
-  updateKeplerPosition = ({ lat, lng }) => {
-    this.clearKeplerData();
+  updateKeplerRegionData = geoJson => {
+    // this.clearKeplerData(); // new region, clear all old data
+    this.setState({ geoJsonKey: geoJson.info.id }, () =>
+      this.props.dispatch(
+        wrapTo(
+          KEPLER_ID,
+          addDataToMap({
+            datasets: data,
+            options: {
+              centerMap: true
+            }
+          })
+        )
+      )
+    );
+  };
+
+  updateMapPosition = ({ lat, lng }) => {
+    this.clearKeplerData(); // new position, clear all old data
     const mapState = {
       latitude: lat,
       longitude: lng,
@@ -114,7 +109,7 @@ class App extends Component {
     console.log("QUERY: ", query);
     /* make request from API */
     const data = sampleData;
-    this.updateKeplerData(data);
+    this.updateKeplerMetricData(data);
   };
 
   componentWillMount() {
@@ -140,7 +135,7 @@ class App extends Component {
           height={height}
         />
         <DataSetSelection
-          onSelectRegion={this.updateKeplerPosition}
+          onSelectRegion={this.updateMapPosition}
           availableMetrics={this.state.availableMetrics}
           onRequestMetric={this.handleOnRequestMetric}
         />

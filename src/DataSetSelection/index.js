@@ -15,7 +15,7 @@ class DatasetSelection extends Component {
     this.setState({ selectedMetric }, () => {
       const { selectedMetric, selectedRegion } = this.state;
       const query = {
-        metric: selectedMetric,
+        metric: selectedMetric.value,
         region: selectedRegion
       };
       this.props.onRequestMetric(query);

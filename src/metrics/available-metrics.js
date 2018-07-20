@@ -28,34 +28,25 @@ const RentalValues = [
   { value: "zri_forecast", label: "Zillow Rent Forecast" }
 ];
 
+const RentalListings = [
+  {
+    value: "median_rent_list_price_sfr_condo/co-op",
+    label: "Median Rent List Price ($), SFR, Condo/Co-op"
+  }
+];
+
+const MoreMetrics = [
+  { value: "negative_equity", label: "Negative Equity" },
+  { value: "negative_equity_time_series", label: "Negative Equity Time Series" },
+  { value: "median_household_income", label: "Median Household Income" }
+];
+
 const Metrics = [
   { label: "Home Values", options: HomeValues },
   { label: "Home Listings and Sales", options: HomeListingsAndSales },
-  { label: "Rental Values", options: RentalValues }
+  { label: "Rental Values", options: RentalValues },
+  { label: "Rental Listings", options: RentalListings },
+  { label: "More Metrics", options: MoreMetrics }
 ];
 
 module.exports = Metrics;
-
-//
-// generateMetricObject = metrics => {
-//   const colorOptions = [
-//     { value: "blue", label: "Blue" },
-//     { value: "red", label: "Red" },
-//     { value: "yellow", label: "Yellow" }
-//   ];
-//
-//   const flavorOptions = [{ value: "chocolate", label: "chocolate" }];
-//
-//   const groupedOptions = [
-//     {
-//       label: "Colors",
-//       options: colorOptions
-//     },
-//     {
-//       label: "Flavors",
-//       options: flavorOptions
-//     }
-//   ];
-//
-//   this.setState({ availableMetrics: groupedOptions });
-// };
