@@ -14,7 +14,8 @@ AWS.config.update({
 const s3 = new AWS.S3();
 
 const myBucket = "hubble-viz-stage";
-const myKey = "zillow_state_zhvi.csv";
+// const myKey = "zillow_state_zhvi.csv";
+const myKey = "TEST_TEXAS.csv";
 const signedUrlExpireSeconds = 60 * 5; // your expiry time in seconds.
 
 ///* TESTING *///
