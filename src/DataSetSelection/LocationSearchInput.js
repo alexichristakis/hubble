@@ -1,10 +1,39 @@
 import React, { Component } from "react";
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from "react-places-autocomplete";
-import styles from "./LocationSearchInputStyle";
+// import styles from "./LocationSearchInputStyle";
+
+import "./LocationSearchInput.css";
+
+const classnames = (...args) => {
+  const isObject = val => {
+    return typeof val === "object" && val !== null;
+  };
+
+  const classes = [];
+  args.forEach(arg => {
+    if (typeof arg === "string") {
+      classes.push(arg);
+    } else if (isObject(arg)) {
+      Object.keys(arg).forEach(key => {
+        if (arg[key]) {
+          classes.push(key);
+        }
+      });
+    } else {
+      throw new Error("`classnames` only accepts string or object as arguments");
+    }
+  });
+
+  return classes.join(" ");
+};
 
 class LocationSearchInput extends Component {
   state = {
     address: ""
+  };
+
+  handleCloseClick = () => {
+    this.setState({ address: "" });
   };
 
   handleChange = address => {
@@ -23,44 +52,52 @@ class LocationSearchInput extends Component {
     };
 
     return (
-      <PlacesAutocomplete
-        value={this.state.address}
-        onChange={this.handleChange}
-        onSelect={this.handleSelect}
-      >
-        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-          <div>
-            <input
-              {...getInputProps({
-                placeholder: 'Search Places ...',
-                className: 'location-search-input',
-              })}
-            />
-            <div className="autocomplete-dropdown-container">
-              {loading && <div>Loading...</div>}
-              {suggestions.map(suggestion => {
-                const className = suggestion.active
-                  ? 'suggestion-item--active'
-                  : 'suggestion-item';
-                // inline style for demonstration purpose
-                const style = suggestion.active
-                  ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-                  : { backgroundColor: '#ffffff', cursor: 'pointer' };
-                return (
-                  <div
-                    {...getSuggestionItemProps(suggestion, {
-                      className,
-                      style,
+      <div style={{ width: "50%" }}>
+        <PlacesAutocomplete
+          onChange={this.handleChange}
+          value={this.state.address}
+          onSelect={this.onPressResult}
+          searchOptions={searchOptions}
+        >
+          {({ getInputProps, suggestions, getSuggestionItemProps }) => {
+            return (
+              <div className="search-bar-container">
+                <div className="search-input-container">
+                  <input
+                    {...getInputProps({
+                      placeholder: "Search Places...",
+                      className: "search-input"
                     })}
-                  >
-                    <span>{suggestion.description}</span>
+                  />
+                  {this.state.address.length > 0 && (
+                    <button className="clear-button" onClick={this.handleCloseClick}>
+                      x
+                    </button>
+                  )}
+                </div>
+                {suggestions.length > 0 && (
+                  <div className="autocomplete-container">
+                    {suggestions.map(suggestion => {
+                      const className = classnames("suggestion-item", {
+                        "suggestion-item--active": suggestion.active
+                      });
+
+                      return (
+                        /* eslint-disable react/jsx-key */
+                        <div {...getSuggestionItemProps(suggestion, { className })}>
+                          <strong>{suggestion.formattedSuggestion.mainText}</strong>{" "}
+                          <small>{suggestion.formattedSuggestion.secondaryText}</small>
+                        </div>
+                      );
+                      /* eslint-enable react/jsx-key */
+                    })}
                   </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-      </PlacesAutocomplete>
+                )}
+              </div>
+            );
+          }}
+        </PlacesAutocomplete>
+      </div>
     );
   }
 }

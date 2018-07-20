@@ -75,7 +75,7 @@ class App extends Component {
         wrapTo(
           KEPLER_ID,
           addDataToMap({
-            datasets: data,
+            datasets: geoJson,
             options: {
               centerMap: true
             }

@@ -35,7 +35,7 @@ const MetricDropdown = props => {
   );
 
   return (
-    <div style={{ width: 400 }}>
+    <div style={{ width: "25%", marginRight: "600px", marginLeft: "15px" }}>
       <Select
         placeholder={"Select a metric"}
         onChange={handleOnChange}
