@@ -60,7 +60,6 @@ export const GetRegionData = region => {
 
     const filePath = getFilePathForRegion(region);
     const key = filePath + "poly.json";
-
     const url = getUrlFromKey(key);
 
     axios.get(url).then(result => resolve(result.data));
@@ -89,18 +88,8 @@ export const GetMetricData = query => {
 
     const filePath = getFilePathForRegion(region);
     const key = filePath + `/metric_time_series/${metric}_${suffix}.csv`;
-
     const url = getUrlFromKey(key);
 
     axios.get(url).then(result => resolve(result.data));
   });
 };
-
-// export const GetMetricData = ({ metricID, regionType, state, county, city }) => {
-//   return new Promise(async resolve => {
-//     const result = await api.get(
-//       `metricID=${metricID}&regionType=${regionType}&stateName=${state}&countyName=${county}&cityName=${city}`
-//     );
-//     resolve(result.data);
-//   });
-// };

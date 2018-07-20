@@ -24,7 +24,7 @@ import {
   PanelHeaderFactory
 } from "kepler.gl/components";
 
-import { Test, GetMetricData } from "./api";
+import { Test, GetMetricData, GetRegionData } from "./api";
 
 // define custom components
 const Empty = () => <div />;
