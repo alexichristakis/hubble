@@ -46,7 +46,7 @@ const getFilePathForRegion = ({ regionType, state, county, city }) => {
   }
 };
 
-const urlFromKey = key => {
+const getUrlFromKey = key => {
   return s3.getSignedUrl("getObject", {
     Bucket: myBucket,
     Key: key,
@@ -54,13 +54,16 @@ const urlFromKey = key => {
   });
 };
 
-export const GetRegionData = query => {
+export const GetRegionData = region => {
   return new Promise(resolve => {
-    // const url = getGeoURL(query);
-    axios
-      .get(url)
-      .then(result => resolve(result.data))
-      .catch(error => console.log(error));
+    const { state, county, city, regionType } = region;
+
+    const filePath = getFilePathForRegion(region);
+    const key = filePath + "poly.json";
+
+    const url = getUrlFromKey(key);
+
+    axios.get(url).then(result => resolve(result.data));
   });
 };
 
@@ -87,7 +90,7 @@ export const GetMetricData = query => {
     const filePath = getFilePathForRegion(region);
     const key = filePath + `/metric_time_series/${metric}_${suffix}.csv`;
 
-    const url = urlFromKey(key);
+    const url = getUrlFromKey(key);
 
     axios.get(url).then(result => resolve(result.data));
   });
