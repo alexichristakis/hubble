@@ -38,19 +38,43 @@ const MetricDropdown = props => {
     control: (base, state) => ({
       ...base,
       border: "none",
+      borderRadius: "0px",
       fontWeight: "400",
-      fontSize: "16px"
+      fontSize: "16px",
+      backgroundColor: "#29323c"
     }),
-  }
+    singleValue: (base, state) => ({
+      ...base,
+      color: "white"
+    }),
+    indicatorSeparator: (base, state) => ({
+      ...base,
+      backgroundColor: "#29323c"
+    }),
+    menu: (base, state) => ({
+      ...base,
+      borderRadius: "0px",
+      backgroundColor: "#252731"
+    }),
+    group: (base, state) => ({
+      ...base,
+      backgroundColor: "#252731"
+    }),
+    option: (base, state) => ({
+      ...base,
+      backgroundColor: state.isFocused ? "#697485" : "#252731",
+      color: "#CAE9F4"
+    })
+  };
 
   return (
-    <div style={{ width: "25%", marginRight: "600px", marginLeft: "15px"}}>
+    <div style={{ width: "25%", marginRight: "600px", marginLeft: "15px" }}>
       <Select
         placeholder={"Select a metric"}
         onChange={handleOnChange}
         options={AvailableMetrics}
         formatGroupLabel={formatGroupLabel}
-        styles = {customStyles}
+        styles={customStyles}
       />
     </div>
   );
