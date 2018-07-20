@@ -5,6 +5,18 @@ import MetricDropdown from "./MetricDropdown";
 
 const defaultRegion = { state: "CA", county: "San Francisco", city: "San Francisco" };
 
+const containerStyle = {
+  position: "absolute",
+  display: "flex",
+  width: "74.8%",
+  paddingLeft: "25.2%",
+  flexDirection: "row",
+  top: 20,
+  left: 0,
+  fontFamily: "Helvetica",
+  border: "none"
+};
+
 class DatasetSelection extends Component {
   state = {
     selectedMetric: "",
@@ -49,26 +61,10 @@ class DatasetSelection extends Component {
   };
 
   render() {
-
     return (
-      <div
-        style={{
-          position: "absolute",
-          display: "flex",
-          width: "100%",
-          flexDirection: "row",
-          top: 20,
-          left: 0,
-          paddingLeft: 360,
-          fontFamily: "Helvetica",
-          border: "none"
-        }}
-      >
+      <div style={containerStyle}>
         <LocationSearchInput onSelectRegion={this.handleOnSelectRegion} />
-        <MetricDropdown
-          onMetricSelect={this.handleOnSelectMetric}
-          // availableMetrics={this.props.availableMetrics}
-        />
+        <MetricDropdown onMetricSelect={this.handleOnSelectMetric} />
       </div>
     );
   }

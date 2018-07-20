@@ -3,6 +3,8 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { addDataToMap, updateVisData, removeDataset, wrapTo } from "kepler.gl/actions";
 // import KeplerGl from "kepler.gl";
+import Processors from "kepler.gl/processors";
+// import Processors from "./processors";
 
 import DatasetSelection from "./DatasetSelection";
 
@@ -22,6 +24,8 @@ import {
   PanelHeaderFactory
 } from "kepler.gl/components";
 
+import { GetRegionData } from "./api";
+
 // define custom components
 const Empty = () => <div />;
 
@@ -31,8 +35,8 @@ const customModalContainerFactory = () => Empty;
 
 // Inject custom components into Kepler.gl, replacing default
 const KeplerGl = injectComponents([
-  // [MapControlFactory, customControlFactory],
   // [ModalContainerFactory, customModalContainerFactory],
+  [MapControlFactory, customControlFactory],
   [PanelHeaderFactory, myCustomHeaderFactory]
 ]);
 
@@ -59,11 +63,16 @@ class App extends Component {
     /* fetch available metrics */
     // this.setState({ availableMetrics: [0, 1, 2, 3, 4, 5] });
 
-    this.updateKeplerRegionData(sampleGeo);
+    this.updateKeplerRegionData(defaultData);
+
+    GetRegionData({ regionType: "County", state: "WA", county: "King" }).then(result =>
+      console.log(result)
+    );
   }
 
   clearKeplerData = () => {
     const { dataSetKey, geoJsonKey } = this.state;
+    this.props.dispatch(wrapTo(KEPLER_ID, removeDataset("test")));
     if (dataSetKey !== "") this.props.dispatch(wrapTo(KEPLER_ID, removeDataset(dataSetKey)));
     if (geoJsonKey !== "") this.props.dispatch(wrapTo(KEPLER_ID, removeDataset(geoJsonKey)));
   };
@@ -87,23 +96,29 @@ class App extends Component {
 
   updateKeplerRegionData = geoJson => {
     console.log(geoJson);
+    // this.props.dispatch(
+    //   updateVisData(
+    //     // datasets
+    //     {
+    //       info: {
+    //         label: "Sample Taxi Trips in New York City",
+    //         id: "test_trip_data"
+    //       },
+    //       data: geoJson
+    //     },
+    //     // option
+    //     {
+    //       centerMap: true,
+    //       readOnly: false
+    //     }
+    //     // config
+    //   )
+    // );
     this.props.dispatch(
-      updateVisData(
-        // datasets
-        {
-          info: {
-            label: "Sample Taxi Trips in New York City",
-            id: "test_trip_data"
-          },
-          data: geoJson
-        },
-        // option
-        {
-          centerMap: true,
-          readOnly: false
-        }
-        // config
-      )
+      updateVisData({
+        info: { id: "test", label: "Cities in King County WA" },
+        data: Processors.processGeojson(geoJson)
+      })
     );
 
     // this.clearKeplerData(); // new region, clear all old data

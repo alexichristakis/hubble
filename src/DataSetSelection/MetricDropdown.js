@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import Select from "react-select";
 
 import AvailableMetrics from "../metrics/available-metrics";
@@ -76,7 +76,7 @@ const MetricDropdown = props => {
   };
 
   return (
-    <div style={{ width: "25%", marginRight: "600px", marginLeft: "15px" }}>
+    <div style={{ width: "50%", marginRight: "200px", marginLeft: "15px" }}>
       <Select
         placeholder={"Select a metric"}
         onChange={handleOnChange}
