@@ -24,7 +24,7 @@ const groupBadgeStyles = {
 
 const MetricDropdown = props => {
   const handleOnChange = item => {
-    props.onMetricSelect(item);
+    props.onSelectMetric(item);
   };
 
   const formatGroupLabel = data => (

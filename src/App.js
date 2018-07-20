@@ -148,13 +148,10 @@ class App extends Component {
     // // );
   };
 
-  handleOnSelectRegion = ({ lat, lng }) => {
+  onSelectRegion = (region) => {
     this.clearKeplerData(); // new position, clear all old data
-    const mapState = {
-      latitude: lat,
-      longitude: lng,
-      zoom: 5
-    };
+
+    this.updateKeplerRegionData(geoJson);
 
     const keplerConfig = { mapState };
     this.props.dispatch(
@@ -168,7 +165,7 @@ class App extends Component {
     );
   };
 
-  handleOnSelectMetric = query => {
+  onSelectMetric = query => {
     console.log("QUERY: ", query);
 
     /* make request from API */
@@ -193,9 +190,9 @@ class App extends Component {
           height={height}
         />
         <DatasetSelection
-          onSelectRegion={this.handleOnSelectRegion}
+          onSelectRegion={this.onSelectRegion}
           availableMetrics={this.state.availableMetrics}
-          onSelectMetric={this.handleOnSelectMetric}
+          onSelectMetric={this.onSelectMetric}
         />
       </Fragment>
     );

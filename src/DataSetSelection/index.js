@@ -29,20 +29,15 @@ class DatasetSelection extends Component {
     currentAddress: ""
   };
 
-  handleOnSelectMetric = selectedMetric => {
-    this.setState({ selectedMetric }, () => {
-      const { selectedMetric, selectedRegion } = this.state;
-      const query = {
-        metric: selectedMetric.value,
-        region: selectedRegion
-      };
-      this.props.onSelectMetric(query);
+  onSelectMetric = (selectedMetric) => {
+    this.setState({ selectedMetric: selectedMetric });
+    this.props.onSelectMetric({
+        metric: this.state.selectedMetric.value,
+        region: this.state.selectedRegion
     });
   };
 
-  handleOnSelectRegion = (result, latLng) => {
-    this.setState({ region: latLng });
-
+  onSelectRegion = (result, latLng) => {
     let region = {
       state: "",
       county: "",
@@ -51,9 +46,6 @@ class DatasetSelection extends Component {
     };
 
     const components = result.address_components;
-    this.setState({
-      currentAddress: result.formatted_address
-    });
     const firstComp = components[0];
     const firstCompArray = firstComp.long_name.split(" ");
     if (firstComp.short_name.length === 2) {
@@ -73,7 +65,13 @@ class DatasetSelection extends Component {
     }
     console.log(region);
 
-    this.setState({ selectedRegion: region }, () => this.props.onSelectRegion(latLng));
+    this.setState(
+      { 
+        selectedRegion: region, 
+        currentAddress: result.formatted_address 
+      }
+    );
+    this.props.onSelectRegion(region);
   };
 
   render() {
@@ -87,13 +85,9 @@ class DatasetSelection extends Component {
 
     return (
       <div style={containerStyle}>
-        <LocationSearchInput
-          onSelectRegion={this.handleOnSelectRegion}
-          handleChange={handleChange}
-          handleCloseClick={handleCloseClick}
-          address={this.state.currentAddress}
-        />
-        <MetricDropdown onMetricSelect={this.handleOnSelectMetric} />
+        <LocationSearchInput onSelectRegion={this.onSelectRegion} handleChange={handleChange} 
+        handleCloseClick={handleCloseClick} address={this.state.currentAddress}/>
+        <MetricDropdown onSelectMetric={this.onSelectMetric}/>
       </div>
     );
   }
