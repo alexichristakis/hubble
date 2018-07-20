@@ -17,6 +17,21 @@ const myBucket = "hubble-viz-stage";
 const myKey = "zillow_state_zhvi.csv";
 const signedUrlExpireSeconds = 60 * 5; // your expiry time in seconds.
 
+///* TESTING *///
+const url = s3.getSignedUrl("getObject", {
+  Bucket: myBucket,
+  Key: myKey,
+  Expires: signedUrlExpireSeconds
+});
+
+export const Test = () => {
+  console.log(url);
+  return new Promise(async resolve => {
+    axios.get(url).then(result => resolve(result));
+  });
+};
+//////////////////
+
 const getGeoURL = ({ regionType, state, county, city }) => {
   switch (regionType) {
     case "state":
@@ -31,6 +46,8 @@ const getGeoURL = ({ regionType, state, county, city }) => {
   }
 };
 
+const getMetricURL = ({ isTimeSeries, regionType, state, county, city }) => {};
+
 const urlFromKey = key => {
   return s3.getSignedUrl("getObject", {
     Bucket: myBucket,
@@ -39,22 +56,19 @@ const urlFromKey = key => {
   });
 };
 
-const url = s3.getSignedUrl("getObject", {
-  Bucket: myBucket,
-  Key: myKey,
-  Expires: signedUrlExpireSeconds
-});
-
-export const Test = () => {
-  console.log(url);
-  return new Promise(async resolve => {
-    axios.get(url).then(result => resolve(result));
+export const GetRegionData = query => {
+  return new Promise(resolve => {
+    const url = getGeoURL(query);
+    axios
+      .get(url)
+      .then(result => resolve(result.data))
+      .catch(error => console.log(error));
   });
 };
 
-export const GetRegionData = query => {
-  return new Promise(async resolve => {
-    const url = getGeoURL(query);
+export const GetMetricData = query => {
+  return new Promise(resolve => {
+    const url = getMetricURL(query);
     axios.get(url).then(result => resolve(result.data));
   });
 };

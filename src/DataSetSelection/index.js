@@ -8,11 +8,11 @@ const defaultRegion = { state: "CA", county: "San Francisco", city: "San Francis
 const containerStyle = {
   position: "absolute",
   display: "flex",
-  width: "74.8%",
-  paddingLeft: "25.2%",
+  paddingLeft: "360px",
   flexDirection: "row",
   top: 20,
   left: 0,
+  right: 0,
   fontFamily: "Helvetica",
   border: "none"
 };
