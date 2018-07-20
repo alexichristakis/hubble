@@ -37,7 +37,9 @@ const MetricDropdown = props => {
   const customStyles = {
     control: (base, state) => ({
       ...base,
-      border: "none"
+      border: "none",
+      fontWeight: "400",
+      fontSize: "16px"
     }),
   }
 
