@@ -68,7 +68,7 @@ class DatasetSelection extends Component {
     }
     console.log(region);
 
-    this.setState({ selectedRegion: region }, () => this.props.onSelectRegion(region));
+    this.setState({ selectedRegion: region }, () => this.props.onSelectRegion(latLng));
   };
 
   render() {
