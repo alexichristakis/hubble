@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { addDataToMap, removeDataset, wrapTo } from "kepler.gl/actions";
 // import KeplerGl from "kepler.gl";
 
-import DataSetSelection from "./DataSetSelection";
+import DatasetSelection from "./DatasetSelection";
 
 // import LocationSearchInput from "./LocationSearchInput";
 import CustomMapControl from "./CustomMapControl";
@@ -134,7 +134,7 @@ class App extends Component {
           width={width}
           height={height}
         />
-        <DataSetSelection
+        <DatasetSelection
           onSelectRegion={this.updateMapPosition}
           availableMetrics={this.state.availableMetrics}
           onRequestMetric={this.handleOnRequestMetric}
