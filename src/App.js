@@ -24,7 +24,7 @@ import {
   PanelHeaderFactory
 } from "kepler.gl/components";
 
-import { GetRegionData } from "./api";
+import { Test } from "./api";
 
 // define custom components
 const Empty = () => <div />;
@@ -58,16 +58,19 @@ class App extends Component {
     this._onResize();
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     // this.updateKeplerData(sampleData);
     /* fetch available metrics */
     // this.setState({ availableMetrics: [0, 1, 2, 3, 4, 5] });
+    console.log("componentDidMount");
+    Test().then(result => this.updateKeplerMetricData(result));
+    // console.log(result);
 
     this.updateKeplerRegionData(defaultData);
 
-    GetRegionData({ regionType: "County", state: "WA", county: "King" }).then(result =>
-      console.log(result)
-    );
+    // GetRegionData({ regionType: "County", state: "WA", county: "King" }).then(result =>
+    //   console.log(result)
+    // );
   }
 
   clearKeplerData = () => {
@@ -78,24 +81,32 @@ class App extends Component {
   };
 
   updateKeplerMetricData = data => {
-    // this.clearKeplerData();
-    this.setState({ dataSetKey: data.info.id }, () =>
-      this.props.dispatch(
-        wrapTo(
-          KEPLER_ID,
-          addDataToMap({
-            datasets: data,
-            options: {
-              centerMap: true
-            }
-          })
-        )
-      )
+    console.log(data);
+    this.props.dispatch(
+      updateVisData({
+        info: { id: "test" },
+        data: Processors.processCsvData(data.data)
+      })
     );
+
+    // this.clearKeplerData();
+    // this.setState({ dataSetKey: data.info.id }, () =>
+    // this.props.dispatch(
+    //   wrapTo(
+    //     KEPLER_ID,
+    //     addDataToMap({
+    //       datasets: data,
+    //       options: {
+    //         centerMap: true
+    //       }
+    //     })
+    //   )
+    // );
+    // );
   };
 
   updateKeplerRegionData = geoJson => {
-    console.log(geoJson);
+    // console.log(geoJson);
     // this.props.dispatch(
     //   updateVisData(
     //     // datasets
