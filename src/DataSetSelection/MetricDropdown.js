@@ -34,13 +34,21 @@ const MetricDropdown = props => {
     </div>
   );
 
+  const customStyles = {
+    control: (base, state) => ({
+      ...base,
+      border: "none"
+    }),
+  }
+
   return (
-    <div style={{ width: "25%", marginRight: "600px", marginLeft: "15px" }}>
+    <div style={{ width: "25%", marginRight: "600px", marginLeft: "15px"}}>
       <Select
         placeholder={"Select a metric"}
         onChange={handleOnChange}
         options={AvailableMetrics}
         formatGroupLabel={formatGroupLabel}
+        styles = {customStyles}
       />
     </div>
   );

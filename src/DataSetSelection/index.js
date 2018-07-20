@@ -58,7 +58,9 @@ class DatasetSelection extends Component {
           flexDirection: "row",
           top: 20,
           left: 0,
-          paddingLeft: 360
+          paddingLeft: 360,
+          fontFamily: "Helvetica",
+          border: "none"
         }}
       >
         <LocationSearchInput onSelectRegion={this.handleOnSelectRegion} />
