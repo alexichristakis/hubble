@@ -17,7 +17,27 @@ const myBucket = "hubble-viz-stage";
 const myKey = "zillow_state_zhvi.csv";
 const signedUrlExpireSeconds = 60 * 5; // your expiry time in seconds.
 
-// const getGeoURL
+const getGeoURL = ({ regionType, state, county, city }) => {
+  switch (regionType) {
+    case "state":
+      console.log("STATE: ", state, county, city);
+      return urlFromKey(`states/${state}/poly.json`);
+    case "county":
+      console.log("COUNTY: ", state, county, city);
+      return urlFromKey(`counties/${state}_${county}/poly.json`);
+    case "city":
+      console.log("CITY: ", state, county, city);
+      return urlFromKey(`cities/${state}_${county}_${city}/poly.json`);
+  }
+};
+
+const urlFromKey = key => {
+  return s3.getSignedUrl("getObject", {
+    Bucket: myBucket,
+    Key: key,
+    Expires: signedUrlExpireSeconds
+  });
+};
 
 const url = s3.getSignedUrl("getObject", {
   Bucket: myBucket,
@@ -32,28 +52,18 @@ export const Test = () => {
   });
 };
 
-const api = axios.create({
-  baseURL: `http://wfc-pp2-tgs-001.uni.zillow.local:31323/getMetric?`
-  // timeout: 1000,
-  // headers: { "X-Custom-Header": "foobar" },
-  // transformResponse: [data => JSON.stringify(data.data)]
-});
-
-export const GetRegionData = ({ regionType, state, county, city }) => {
-  console.log(regionType);
+export const GetRegionData = query => {
   return new Promise(async resolve => {
-    const result = await api.get(
-      `regionType=${regionType}&stateName=${state}&countyName=${county}&cityName=${city}`
-    );
-    resolve(result.data);
+    const url = getGeoURL(query);
+    axios.get(url).then(result => resolve(result.data));
   });
 };
 
-export const GetMetricData = ({ metricID, regionType, state, county, city }) => {
-  return new Promise(async resolve => {
-    const result = await api.get(
-      `metricID=${metricID}&regionType=${regionType}&stateName=${state}&countyName=${county}&cityName=${city}`
-    );
-    resolve(result.data);
-  });
-};
+// export const GetMetricData = ({ metricID, regionType, state, county, city }) => {
+//   return new Promise(async resolve => {
+//     const result = await api.get(
+//       `metricID=${metricID}&regionType=${regionType}&stateName=${state}&countyName=${county}&cityName=${city}`
+//     );
+//     resolve(result.data);
+//   });
+// };
