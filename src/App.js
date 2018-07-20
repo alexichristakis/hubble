@@ -1,29 +1,39 @@
 import React, { Component, Fragment } from "react";
 
 import { connect } from "react-redux";
-import { addDataToMap, removeDataset, wrapTo } from "kepler.gl/actions";
+import { addDataToMap, updateVisData, removeDataset, wrapTo } from "kepler.gl/actions";
 // import KeplerGl from "kepler.gl";
 
 import DatasetSelection from "./DatasetSelection";
 
 // import LocationSearchInput from "./LocationSearchInput";
 import CustomMapControl from "./CustomMapControl";
+import CustomHeader from "./CustomHeader";
 
 import sampleData from "./data/sample-data";
+import sampleGeo from "./data/sample-geojson.json";
+import defaultData from "./data/WA_King.json";
 import config from "./configurations/config.json";
 
-import { injectComponents, MapControlFactory, ModalContainerFactory } from "kepler.gl/components";
+import {
+  injectComponents,
+  MapControlFactory,
+  ModalContainerFactory,
+  PanelHeaderFactory
+} from "kepler.gl/components";
 
 // define custom components
 const Empty = () => <div />;
 
+const myCustomHeaderFactory = () => CustomHeader;
 const customControlFactory = () => CustomMapControl;
 const customModalContainerFactory = () => Empty;
 
 // Inject custom components into Kepler.gl, replacing default
 const KeplerGl = injectComponents([
   // [MapControlFactory, customControlFactory],
-  [ModalContainerFactory, customModalContainerFactory]
+  // [ModalContainerFactory, customModalContainerFactory],
+  [PanelHeaderFactory, myCustomHeaderFactory]
 ]);
 
 const KEPLER_ID = "map";
@@ -39,10 +49,17 @@ class App extends Component {
     height: window.innerHeight
   };
 
+  componentWillMount() {
+    window.addEventListener("resize", this._onResize);
+    this._onResize();
+  }
+
   componentDidMount() {
     // this.updateKeplerData(sampleData);
     /* fetch available metrics */
     // this.setState({ availableMetrics: [0, 1, 2, 3, 4, 5] });
+
+    this.updateKeplerRegionData(sampleGeo);
   }
 
   clearKeplerData = () => {
@@ -69,20 +86,40 @@ class App extends Component {
   };
 
   updateKeplerRegionData = geoJson => {
-    // this.clearKeplerData(); // new region, clear all old data
-    this.setState({ geoJsonKey: geoJson.info.id }, () =>
-      this.props.dispatch(
-        wrapTo(
-          KEPLER_ID,
-          addDataToMap({
-            datasets: geoJson,
-            options: {
-              centerMap: true
-            }
-          })
-        )
+    console.log(geoJson);
+    this.props.dispatch(
+      updateVisData(
+        // datasets
+        {
+          info: {
+            label: "Sample Taxi Trips in New York City",
+            id: "test_trip_data"
+          },
+          data: geoJson
+        },
+        // option
+        {
+          centerMap: true,
+          readOnly: false
+        }
+        // config
       )
     );
+
+    // this.clearKeplerData(); // new region, clear all old data
+    // this.setState({ geoJsonKey: geoJson.info.id }, () =>
+    // this.props.dispatch(
+    //   wrapTo(
+    //     KEPLER_ID,
+    //     // addDataToMap({
+    //     //   datasets: geoJson,
+    //     //   options: {
+    //     //     centerMap: true
+    //     //   }
+    //     // })
+    //   )
+    // );
+    // // );
   };
 
   updateMapPosition = ({ lat, lng }) => {
@@ -111,11 +148,6 @@ class App extends Component {
     const data = sampleData;
     this.updateKeplerMetricData(data);
   };
-
-  componentWillMount() {
-    window.addEventListener("resize", this._onResize);
-    this._onResize();
-  }
 
   _onResize = () => {
     this.setState({

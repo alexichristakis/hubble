@@ -6864,7 +6864,7 @@ react-motion@^0.5.2:
   version "6.7.1"
   resolved "https://registry.npmjs.org/react-onclickoutside/-/react-onclickoutside-6.7.1.tgz#6a5b5b8b4eae6b776259712c89c8a2b36b17be93"
 
-react-palm@^0.8.1:
+react-palm@0.8.1, react-palm@^0.8.1:
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/react-palm/-/react-palm-0.8.1.tgz#7c7fd7348235ea04fd46c5da4a11000e0ee9343d"
   dependencies:
@@ -7145,6 +7145,10 @@ redux-actions@^2.2.1:
     lodash "^4.13.1"
     lodash-es "^4.17.4"
     reduce-reducers "^0.1.0"
+
+redux-thunk@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.3.0.tgz#51c2c19a185ed5187aaa9a2d08b666d0d6467622"
 
 redux@^3.0.4:
   version "3.7.2"

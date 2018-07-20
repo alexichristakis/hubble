@@ -43,6 +43,12 @@ const MetricDropdown = props => {
       fontSize: "16px",
       backgroundColor: "#29323c"
     }),
+    groupHeading: (base, state) => ({
+      ...base,
+      fontSize: "16px",
+      color: "#1CBAD6",
+      fontWeight: "600"
+    }),
     singleValue: (base, state) => ({
       ...base,
       color: "white"
@@ -62,6 +68,8 @@ const MetricDropdown = props => {
     }),
     option: (base, state) => ({
       ...base,
+      marginLeft: "2%",
+      maxWidth: "98%",
       backgroundColor: state.isFocused ? "#697485" : "#252731",
       color: "#CAE9F4"
     })

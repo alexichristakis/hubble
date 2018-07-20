@@ -52,7 +52,7 @@ class LocationSearchInput extends Component {
     };
 
     return (
-      <div style={{ width: "50%" }}>
+      <div style={{ width: "50%", overflow: "hidden" }}>
         <PlacesAutocomplete
           onChange={this.handleChange}
           value={this.state.address}
@@ -65,7 +65,7 @@ class LocationSearchInput extends Component {
                 <div className="search-input-container">
                   <input
                     {...getInputProps({
-                      placeholder: "Search Places...",
+                      placeholder: "Search States, Counties, or Cities",
                       className: "search-input"
                     })}
                   />
@@ -78,18 +78,20 @@ class LocationSearchInput extends Component {
                 {suggestions.length > 0 && (
                   <div className="autocomplete-container">
                     {suggestions.map(suggestion => {
-                      const className = classnames("suggestion-item", {
-                        "suggestion-item--active": suggestion.active
-                      });
+                      if (suggestion.terms[suggestion.terms.length - 1].value === "USA") {
+                        const className = classnames("suggestion-item", {
+                          "suggestion-item--active": suggestion.active
+                        });
 
-                      return (
-                        /* eslint-disable react/jsx-key */
-                        <div {...getSuggestionItemProps(suggestion, { className })}>
-                          <strong>{suggestion.formattedSuggestion.mainText}</strong>{" "}
-                          <small>{suggestion.formattedSuggestion.secondaryText}</small>
-                        </div>
-                      );
-                      /* eslint-enable react/jsx-key */
+                        return (
+                          /* eslint-disable react/jsx-key */
+                          <div {...getSuggestionItemProps(suggestion, { className })}>
+                            <strong>{suggestion.formattedSuggestion.mainText}</strong>{" "}
+                            <small>{suggestion.formattedSuggestion.secondaryText}</small>
+                          </div>
+                        );
+                        /* eslint-enable react/jsx-key */
+                      }
                     })}
                   </div>
                 )}
