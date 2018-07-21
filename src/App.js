@@ -43,12 +43,11 @@ const KeplerGl = injectComponents([
 const KEPLER_ID = "map";
 const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_API_KEY;
 const GOOGLE_MAPS_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+const REGION_DATA_ID = 'regionDataID';
+const METRIC_DATA_ID = 'metricDataID';
 
 class App extends Component {
   state = {
-    dataSetKey: "",
-    geoJsonKey: "",
-    availableMetrics: [],
     width: window.innerWidth,
     height: window.innerHeight
   };
@@ -74,18 +73,16 @@ class App extends Component {
   }
 
   clearKeplerData = () => {
-    const { dataSetKey, geoJsonKey } = this.state;
-    this.props.dispatch(wrapTo(KEPLER_ID, removeDataset("test")));
-    if (dataSetKey !== "") this.props.dispatch(wrapTo(KEPLER_ID, removeDataset(dataSetKey)));
-    if (geoJsonKey !== "") this.props.dispatch(wrapTo(KEPLER_ID, removeDataset(geoJsonKey)));
+    this.props.dispatch(wrapTo(KEPLER_ID, removeDataset(REGION_DATA_ID)));
+    this.props.dispatch(wrapTo(KEPLER_ID, removeDataset(METRIC_DATA_ID)));
   };
 
   updateKeplerMetricData = data => {
     console.log(data);
     this.props.dispatch(
       updateVisData({
-        info: { id: "test" },
-        data: Processors.processCsvData(data.data)
+        info: { id: METRIC_DATA_ID },
+        data: Processors.processCsvData(data)
       })
     );
 
@@ -126,10 +123,16 @@ class App extends Component {
     //   )
     // );
     this.props.dispatch(
-      updateVisData({
-        info: { id: "test", label: "Cities in King County WA" },
-        data: Processors.processGeojson(geoJson)
-      })
+      updateVisData(
+        {
+          info: { id: REGION_DATA_ID },
+          data: Processors.processGeojson(geoJson)
+        },
+        {
+          centerMap: true,
+          readOnly: false
+        }
+      )
     );
 
     // this.clearKeplerData(); // new region, clear all old data
@@ -149,29 +152,15 @@ class App extends Component {
   };
 
   onSelectRegion = (region) => {
-    this.clearKeplerData(); // new position, clear all old data
+    this.clearKeplerData(); 
 
-    // TODO: Make api call
-
-    /*this.updateKeplerRegionData(geoJson);
-
-    const keplerConfig = { mapState };
-    this.props.dispatch(
-      wrapTo(
-        KEPLER_ID,
-        addDataToMap({
-          datasets: {},
-          config: keplerConfig
-        })
-      )
-    );*/
+    GetRegionData(region).then(data => this.updateKeplerRegionData(data));
   };
 
   onSelectMetric = query => {
     console.log("QUERY: ", query);
-
     /* make request from API */
-    GetMetricData(query).then(data => this.updateKeplerData(data));
+    GetMetricData(query).then(data => this.updateKeplerMetricData(data));
   };
 
   _onResize = () => {

@@ -30,11 +30,15 @@ class DatasetSelection extends Component {
   };
 
   onSelectMetric = (selectedMetric) => {
-    this.setState({ selectedMetric: selectedMetric });
-    this.props.onSelectMetric({
-        metric: this.state.selectedMetric.value,
-        region: this.state.selectedRegion
-    });
+    this.setState({ selectedMetric: selectedMetric }, () => {
+      this.props.onSelectMetric({
+            metric: this.state.selectedMetric.value,
+            region: this.state.selectedRegion
+        })
+      }
+    );
+    console.log(selectedMetric)
+    
   };
 
   onSelectRegion = (result, latLng) => {

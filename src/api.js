@@ -1,5 +1,4 @@
 import axios from "axios";
-import Amplify, { Storage } from "aws-amplify";
 
 const AWS = require("aws-sdk");
 
@@ -28,7 +27,7 @@ const url = s3.getSignedUrl("getObject", {
 export const Test = () => {
   console.log(url);
   return new Promise(async resolve => {
-    axios.get(url).then(result => resolve(result));
+    axios.get(url).then(result => resolve(result.data));
   });
 };
 //////////////////
@@ -36,13 +35,13 @@ export const Test = () => {
 const getFilePathForRegion = ({ regionType, state, county, city }) => {
   switch (regionType) {
     case 1:
-      return `states/${state}`;
+      return `states/${state}/`;
     case 2:
-      return `counties/${state}_${county}`;
+      return `counties/${state}_${county}/`;
     case 3:
-      return `cities/${state}_${county}_${city}`;
+      return `cities/${state}_${county}_${city}/`;
     default:
-      return "national";
+      return "national/";
   }
 };
 
@@ -56,8 +55,6 @@ const getUrlFromKey = key => {
 
 export const GetRegionData = region => {
   return new Promise(resolve => {
-    const { state, county, city, regionType } = region;
-
     const filePath = getFilePathForRegion(region);
     const key = filePath + "poly.json";
     const url = getUrlFromKey(key);
@@ -87,7 +84,7 @@ export const GetMetricData = query => {
     }
 
     const filePath = getFilePathForRegion(region);
-    const key = filePath + `/metric_time_series/${metric}_${suffix}.csv`;
+    const key = filePath + `metric_time_series/${metric}_${suffix}.csv`;
     const url = getUrlFromKey(key);
 
     axios.get(url).then(result => resolve(result.data));

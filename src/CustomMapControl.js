@@ -1,6 +1,5 @@
 import React from "react";
 
-import { toggleFullScreen, forwardTo } from "kepler.gl/actions";
 import { MapControlFactory } from "kepler.gl/components";
 
 const CustomMapControlFactory = MapControlFactory();
