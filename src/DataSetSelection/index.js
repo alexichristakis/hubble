@@ -29,20 +29,19 @@ class DatasetSelection extends Component {
     currentAddress: ""
   };
 
-  onSelectMetric = (selectedMetric) => {
+  onSelectMetric = selectedMetric => {
     this.setState({ selectedMetric: selectedMetric }, () => {
       this.props.onSelectMetric({
-            metric: this.state.selectedMetric.value,
-            region: this.state.selectedRegion
-        })
-      }
-    );
-    console.log(selectedMetric)
-    
+        metric: this.state.selectedMetric.value,
+        region: this.state.selectedRegion
+      });
+    });
+    console.log(selectedMetric);
   };
 
   onSelectRegion = (result, latLng) => {
     let region = {
+      latLng,
       state: "",
       county: "",
       city: "",
@@ -69,12 +68,10 @@ class DatasetSelection extends Component {
     }
     console.log(region);
 
-    this.setState(
-      { 
-        selectedRegion: region, 
-        currentAddress: result.formatted_address 
-      }
-    );
+    this.setState({
+      selectedRegion: region,
+      currentAddress: result.formatted_address
+    });
     this.props.onSelectRegion(region);
   };
 
@@ -89,9 +86,13 @@ class DatasetSelection extends Component {
 
     return (
       <div style={containerStyle}>
-        <LocationSearchInput onSelectRegion={this.onSelectRegion} handleChange={handleChange} 
-        handleCloseClick={handleCloseClick} address={this.state.currentAddress}/>
-        <MetricDropdown onSelectMetric={this.onSelectMetric}/>
+        <LocationSearchInput
+          onSelectRegion={this.onSelectRegion}
+          handleChange={handleChange}
+          handleCloseClick={handleCloseClick}
+          address={this.state.currentAddress}
+        />
+        <MetricDropdown onSelectMetric={this.onSelectMetric} />
       </div>
     );
   }
