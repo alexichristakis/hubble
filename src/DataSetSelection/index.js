@@ -4,10 +4,10 @@ import LocationSearchInput from "./LocationSearchInput";
 import MetricDropdown from "./MetricDropdown";
 
 const defaultRegion = {
-  state: "CA",
-  county: "San Francisco",
-  city: "San Francisco",
-  regionType: 3
+  state: "WA",
+  county: "",
+  city: "",
+  regionType: 2
 };
 
 const containerStyle = {

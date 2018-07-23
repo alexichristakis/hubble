@@ -29,7 +29,7 @@
             "isVisible": true,
             "visConfig": {
               "opacity": 0.8,
-              "worldUnitSize": 7.09,
+              "worldUnitSize": 19,
               "resolution": 8,
               "colorRange": {
                 "name": "ColorBrewer PuBu-6",
@@ -42,7 +42,7 @@
               "sizeRange": [0, 500],
               "percentile": [0, 100],
               "elevationPercentile": [0, 100],
-              "elevationScale": 56.7,
+              "elevationScale": 0.2,
               "hi-precision": false,
               "colorAggregation": "average",
               "sizeAggregation": "average",
