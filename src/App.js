@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from "react";
 
 import { connect } from "react-redux";
-import { addDataToMap, updateVisData, removeDataset, wrapTo } from "kepler.gl/actions";
+import { addDataToMap, updateVisData, removeDataset, wrapTo, addLayer, removeLayer} from "kepler.gl/actions";
 import Processors from "kepler.gl/processors";
+
 
 import DatasetSelection from "./DatasetSelection";
 
@@ -13,7 +14,7 @@ import sampleData from "./data/sample-data";
 import sampleGeo from "./data/sample-geojson.json";
 import defaultData from "./data/WA_King_poly.json";
 import config from "./configurations/default_WA_config.json";
-import dataConfig from "./configurations/dataConfig.json"; 
+import dataConfig2 from "./configurations/dataConfig2.json"; 
 
 import {
   injectComponents,
@@ -68,13 +69,18 @@ class App extends Component {
 
   updateKeplerMetricData = data => {
 
+    // this.props.dispatch(
+    //   removeLayer(0)
+    // )
+
     this.props.dispatch(
       addDataToMap({
-        datasets: [{ info: { id: REGION_DATA_ID }, data: Processors.processCsvData(data) }],
-        options: { centerMap: true },
-        dataConfig
+        datasets: [{ info: { id: METRIC_DATA_ID }, data: Processors.processCsvData(data) }],
+        options: { centerMap: false },
+        // config: dataConfig2
       })
     )
+
 
     // this.props.dispatch(
     //   updateVisData({
@@ -89,7 +95,7 @@ class App extends Component {
       addDataToMap({
         datasets: [{ info: { id: REGION_DATA_ID }, data: Processors.processGeojson(geoJson) }],
         options: { centerMap: true },
-        config
+        config: dataConfig2
       })
       // updateVisData(
       //   {
