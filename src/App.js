@@ -1,9 +1,15 @@
 import React, { Component, Fragment } from "react";
 
 import { connect } from "react-redux";
-import { addDataToMap, updateVisData, removeDataset, wrapTo, addLayer, removeLayer} from "kepler.gl/actions";
+import {
+  addDataToMap,
+  updateVisData,
+  removeDataset,
+  wrapTo,
+  addLayer,
+  removeLayer
+} from "kepler.gl/actions";
 import Processors from "kepler.gl/processors";
-
 
 import DatasetSelection from "./DatasetSelection";
 
@@ -14,7 +20,8 @@ import sampleData from "./data/sample-data";
 import sampleGeo from "./data/sample-geojson.json";
 import defaultData from "./data/WA_King_poly.json";
 import config from "./configurations/default_WA_config.json";
-import dataConfig2 from "./configurations/dataConfig2.json"; 
+import dataConfig2 from "./configurations/dataConfig2.json";
+import hexbin from "./configurations/hexbin.json";
 
 import {
   injectComponents,
@@ -23,18 +30,13 @@ import {
   PanelHeaderFactory
 } from "kepler.gl/components";
 
-import { Test, GetMetricData, GetRegionData } from "./api";
-
-// define custom components
-const Empty = () => <div />;
+import { GetMetricData, GetRegionData } from "./api";
 
 const myCustomHeaderFactory = () => CustomHeader;
 const customControlFactory = () => CustomMapControl;
-const customModalContainerFactory = () => Empty;
 
 // Inject custom components into Kepler.gl, replacing default
 const KeplerGl = injectComponents([
-  // [ModalContainerFactory, customModalContainerFactory],
   [MapControlFactory, customControlFactory],
   [PanelHeaderFactory, myCustomHeaderFactory]
 ]);
@@ -57,8 +59,6 @@ class App extends Component {
   }
 
   componentDidMount() {
-    console.log(config);
-    // Test().then(result => this.updateKeplerMetricData(result));
     this.updateKeplerRegionData(defaultData);
   }
 
@@ -68,7 +68,6 @@ class App extends Component {
   };
 
   updateKeplerMetricData = data => {
-
     // this.props.dispatch(
     //   removeLayer(0)
     // )
@@ -76,11 +75,10 @@ class App extends Component {
     this.props.dispatch(
       addDataToMap({
         datasets: [{ info: { id: METRIC_DATA_ID }, data: Processors.processCsvData(data) }],
-        options: { centerMap: false },
+        options: { centerMap: false }
         // config: dataConfig2
       })
-    )
-
+    );
 
     // this.props.dispatch(
     //   updateVisData({
@@ -95,28 +93,16 @@ class App extends Component {
       addDataToMap({
         datasets: [{ info: { id: REGION_DATA_ID }, data: Processors.processGeojson(geoJson) }],
         options: { centerMap: true },
-        config: dataConfig2
+        config: hexbin
+        // config: dataConfig2
       })
-      // updateVisData(
-      //   {
-      //     info: { id: REGION_DATA_ID },
-      //     data: Processors.processGeojson(geoJson)
-      //   },
-      //   {
-      //     centerMap: true,
-      //     readOnly: false
-      //   },
-      //   {
-      //     ...default_config
-      //   }
-      // )
     );
   };
 
   moveMapTo = ({ lat, lng }) => {
     const mapState = {
       latitude: lat,
-      longitde: lng,
+      longitde: lng
     };
 
     const dummyConfig = { mapState };
