@@ -9,7 +9,7 @@
           "type": "geojson",
           "config": {
             "dataId": "regionDataID",
-            "label": "WA_King",
+            "label": "Region Outline",
             "color": [239, 118, 158, 255],
             "columns": {
               "geojson": "_geojson"
@@ -17,7 +17,7 @@
             "isVisible": true,
             "visConfig": {
               "opacity": 0.8,
-              "thickness": 0.8,
+              "thickness": 0.4,
               "colorRange": {
                 "name": "Global Warming",
                 "type": "sequential",
@@ -72,10 +72,8 @@
     "mapState": {
       "bearing": 0,
       "dragRotate": false,
-      "latitude": 47.43631207733656,
-      "longitude": -121.92470278214678,
       "pitch": 0,
-      "zoom": 9.09181040622165,
+      "zoom": 6.5,
       "isSplit": false
     },
     "mapStyle": {

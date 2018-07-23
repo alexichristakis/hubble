@@ -32,7 +32,20 @@ export const Test = () => {
 };
 //////////////////
 
-const getFilePathForRegion = ({ regionType, state, county, city }) => {
+const getRegionDataFilePath = ({ regionType, state, county, city }) => {
+  switch (regionType) {
+    case 1:
+      return `states/${state}/${state}`;
+    case 2:
+      return `counties/${state}_${county}/${state}_${county}`;
+    case 3:
+      return `cities/${state}_${county}_${city}/${state}_${county}_${city}`;
+    default:
+      return "national/";
+  }
+};
+
+const getRegionMetricFilePath = ({ regionType, state, county, city }) => {
   switch (regionType) {
     case 1:
       return `states/${state}/`;
@@ -55,10 +68,10 @@ const getUrlFromKey = key => {
 
 export const GetRegionData = region => {
   return new Promise(resolve => {
-    const filePath = getFilePathForRegion(region);
-    const key = filePath + "poly.json";
+    const filePath = getRegionDataFilePath(region);
+    const key = filePath + ".json";
     const url = getUrlFromKey(key);
-
+    console.log("GeoJson request: " + url); 
     axios.get(url).then(result => resolve(result.data));
   });
 };
@@ -83,10 +96,11 @@ export const GetMetricData = query => {
         suffix = "US";
     }
 
-    const filePath = getFilePathForRegion(region);
-    const key = filePath + `metric_time_series/${metric}_${suffix}.csv`;
+    const filePath = getRegionMetricFilePath(region);
+    const key = filePath + `metric_time_series/${metric}.csv`;
     const url = getUrlFromKey(key);
 
     axios.get(url).then(result => resolve(result.data));
   });
 };
+

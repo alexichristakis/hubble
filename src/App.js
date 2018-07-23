@@ -11,9 +11,9 @@ import CustomHeader from "./CustomHeader";
 
 import sampleData from "./data/sample-data";
 import sampleGeo from "./data/sample-geojson.json";
-import defaultData from "./data/WA_King.json";
-// import config from "./configurations/config.json";
+import defaultData from "./data/WA_King_poly.json";
 import config from "./configurations/default_WA_config.json";
+import dataConfig from "./configurations/dataConfig.json"; 
 
 import {
   injectComponents,
@@ -67,12 +67,21 @@ class App extends Component {
   };
 
   updateKeplerMetricData = data => {
+
     this.props.dispatch(
-      updateVisData({
-        info: { id: METRIC_DATA_ID },
-        data: Processors.processCsvData(data)
+      addDataToMap({
+        datasets: [{ info: { id: REGION_DATA_ID }, data: Processors.processCsvData(data) }],
+        options: { centerMap: true },
+        dataConfig
       })
-    );
+    )
+
+    // this.props.dispatch(
+    //   updateVisData({
+    //     info: { id: METRIC_DATA_ID },
+    //     data: Processors.processCsvData(data)
+    //   })
+    // );
   };
 
   updateKeplerRegionData = geoJson => {
@@ -102,26 +111,26 @@ class App extends Component {
     const mapState = {
       latitude: lat,
       longitde: lng,
-      zoom: 7
     };
 
-    const config = { mapState };
+    const dummyConfig = { mapState };
 
     this.props.dispatch(
       wrapTo(
         KEPLER_ID,
         addDataToMap({
           datasets: {},
-          config
+          dummyConfig
         })
       )
     );
   };
 
   onSelectRegion = region => {
-    this.clearKeplerData();
     this.moveMapTo(region.latLng);
+    this.clearKeplerData();
     GetRegionData(region).then(data => this.updateKeplerRegionData(data));
+    // GetRegionData(region).then(data => this.updateKeplerRegionData(data));
   };
 
   onSelectMetric = query => {

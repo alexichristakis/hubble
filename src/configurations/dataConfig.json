@@ -1,0 +1,105 @@
+{
+  "version": "v1",
+  "config": {
+    "visState": {
+      "filters": [],
+      "layers": [
+        {
+          "id": "0rh6e2e",
+          "type": "cluster",
+          "config": {
+            "dataId": "metricDataID",
+            "label": "Point",
+            "color": [
+              218,
+              112,
+              191
+            ],
+            "columns": {
+              "lat": "lat",
+              "lng": "lon"
+            },
+            "isVisible": true,
+            "visConfig": {
+              "opacity": 0.8,
+              "clusterRadius": 3.5,
+              "colorRange": {
+                "name": "ColorBrewer Blues-6",
+                "type": "sequential",
+                "category": "ColorBrewer",
+                "colors": [
+                  "#eff3ff",
+                  "#c6dbef",
+                  "#9ecae1",
+                  "#6baed6",
+                  "#3182bd",
+                  "#08519c"
+                ],
+                "reversed": false
+              },
+              "radiusRange": [
+                0,
+                16.9
+              ],
+              "hi-precision": false,
+              "colorAggregation": "average"
+            }
+          },
+          "visualChannels": {
+            "colorField": {
+              "name": "Housing Stock All Homes",
+              "type": "integer"
+            },
+            "colorScale": "quantile"
+          }
+        }
+      ],
+      "interactionConfig": {
+        "tooltip": {
+          "fieldsToShow": {
+            "regionDataID": [
+              "lastupdateby",
+              "regionid",
+              "populationcnt",
+              "updatedate",
+              "regionname"
+            ],
+            "metricDataID": [
+              "county",
+              "state",
+              "Housing Stock All Homes",
+              "DateTime"
+            ]
+          },
+          "enabled": true
+        },
+        "brush": {
+          "size": 0.5,
+          "enabled": false
+        }
+      },
+      "layerBlending": "normal",
+      "splitMaps": []
+    },
+    "mapState": {
+      "bearing": 0,
+      "dragRotate": false,
+      "pitch": 0,
+      "isSplit": false
+    },
+    "mapStyle": {
+      "styleType": "dark",
+      "topLayerGroups": {
+        "label": false
+      },
+      "visibleLayerGroups": {
+        "label": true,
+        "road": true,
+        "border": true,
+        "building": true,
+        "water": true,
+        "land": true
+      }
+    }
+  }
+}
