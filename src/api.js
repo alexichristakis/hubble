@@ -11,26 +11,8 @@ AWS.config.update({
 });
 
 const s3 = new AWS.S3();
-
 const myBucket = "hubble-viz-stage";
-const myKey = "zillow_state_zhvi.csv";
-// const myKey = "TEST_TEXAS.csv";
-const signedUrlExpireSeconds = 60 * 5; // your expiry time in seconds.
-
-///* TESTING *///
-const url = s3.getSignedUrl("getObject", {
-  Bucket: myBucket,
-  Key: myKey,
-  Expires: signedUrlExpireSeconds
-});
-
-export const Test = () => {
-  console.log(url);
-  return new Promise(async resolve => {
-    axios.get(url).then(result => resolve(result.data));
-  });
-};
-//////////////////
+const signedUrlExpireSeconds = 60 * 5; // expiry time in seconds.
 
 const getRegionDataFilePath = ({ regionType, state, county, city }) => {
   switch (regionType) {
@@ -41,7 +23,7 @@ const getRegionDataFilePath = ({ regionType, state, county, city }) => {
     case 3:
       return `cities/${state}_${county}_${city}/${state}_${county}_${city}`;
     default:
-      return "national/";
+      return `msa/msa_full`;
   }
 };
 
@@ -54,53 +36,69 @@ const getRegionMetricFilePath = ({ regionType, state, county, city }) => {
     case 3:
       return `cities/${state}_${county}_${city}/`;
     default:
-      return "national/";
+      return `msa/`;
   }
 };
 
 const getUrlFromKey = key => {
   return s3.getSignedUrl("getObject", {
     Bucket: myBucket,
-    Key: key,
+    Key: "data/" + key,
     Expires: signedUrlExpireSeconds
   });
 };
 
+export const GetAvailableMetrics = path => {
+  const filePath = "data/" + path;
+  return new Promise(async resolve => {
+    const { Contents } = await s3
+      .listObjectsV2({
+        Bucket: myBucket,
+        MaxKeys: 2147483647,
+        Prefix: filePath,
+        StartAfter: filePath
+      })
+      .promise();
+
+    let keys = [];
+    Contents.forEach(file => {
+      let key = file.Key.replace(filePath, "").replace(".csv", "");
+      keys.push(key);
+    });
+
+    resolve(keys);
+  });
+};
+
 export const GetRegionData = region => {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     const filePath = getRegionDataFilePath(region);
-    const key = filePath + ".json";
-    const url = getUrlFromKey(key);
-    console.log("GeoJson request: " + url); 
-    axios.get(url).then(result => resolve(result.data));
+
+    const regionKey = filePath + ".json";
+    const metricsKey = getRegionMetricFilePath(region) + "metric_time_series/";
+
+    const url = getUrlFromKey(regionKey);
+
+    Promise.all([axios.get(url), GetAvailableMetrics(metricsKey)])
+      .then(values => {
+        resolve({ regionData: values[0].data, availableMetrics: values[1] });
+      })
+      .catch(error => {
+        reject(error);
+      });
   });
 };
 
 export const GetMetricData = query => {
   return new Promise(resolve => {
     const { region, metric } = query;
-    const { state, county, city, regionType } = region;
-
-    let suffix;
-    switch (regionType) {
-      case 1:
-        suffix = state;
-        break;
-      case 2:
-        suffix = county;
-        break;
-      case 3:
-        suffix = city;
-        break;
-      default:
-        suffix = "US";
-    }
 
     const filePath = getRegionMetricFilePath(region);
     const key = filePath + `metric_time_series/${metric}.csv`;
     const url = getUrlFromKey(key);
 
-    axios.get(url).then(result => resolve(result.data));
+    axios.get(url, { responseType: "stream" }).then(result => {
+      resolve(result.data);
+    });
   });
 };
-

@@ -5174,9 +5174,9 @@ kdbush@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/kdbush/-/kdbush-1.0.1.tgz#3cbd03e9dead9c0f6f66ccdb96450e5cecc640e0"
 
-kepler.gl@0.0.25:
-  version "0.0.25"
-  resolved "https://registry.yarnpkg.com/kepler.gl/-/kepler.gl-0.0.25.tgz#1036bbdea73b0a3565b132ea4d1dd3177cea6762"
+kepler.gl@0.0.26:
+  version "0.0.26"
+  resolved "https://registry.yarnpkg.com/kepler.gl/-/kepler.gl-0.0.26.tgz#c3d07a26091a40475dab10235421b43189038346"
   dependencies:
     "@mapbox/geo-viewport" "^0.2.2"
     "@mapbox/geojson-extent" "^0.3.2"
@@ -5794,7 +5794,7 @@ mkdirp@0.5.1, mkdirp@0.5.x, mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkdirp@
   dependencies:
     minimist "0.0.8"
 
-moment@^2.10.6:
+moment@^2.10.6, moment@^2.22.2:
   version "2.22.2"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
 
@@ -7023,6 +7023,10 @@ react-input-autosize@^2.2.1:
 react-lifecycles-compat@^3.0.0, react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
+
+react-loading@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/react-loading/-/react-loading-2.0.3.tgz#e8138fb0c3e4674e481b320802ac7048ae14ffb9"
 
 react-map-gl@^3.2.1:
   version "3.3.0"
